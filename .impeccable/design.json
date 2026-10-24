@@ -1,0 +1,21 @@
+{
+  "world": "swatch-fan-deck",
+  "color": {
+    "ink": { "engineer": "#2B3BE5", "design": "#D4006E", "automation": "#C6E400" },
+    "onInk": { "engineer": "#FFFFFF", "design": "#FFFFFF", "automation": "#11140A" },
+    "paper": "#F2F3F0", "paper2": "#E7E8E4", "strip": "#FBFBF9",
+    "text": "#15161A", "text2": "#4C4F57", "line": "rgba(21,22,26,0.12)"
+  },
+  "type": {
+    "display": { "family": "Bricolage Grotesque Variable", "weight": 700, "stretch": "88%", "tracking": "-0.035em", "lineHeight": 0.95, "max": "6rem" },
+    "text": { "family": "Geist", "size": "16px", "lineHeight": 1.55 },
+    "code": { "family": "Geist Mono", "size": "12px" }
+  },
+  "radius": { "chip": "6px", "card": "10px", "sheet": "18px", "pill": "999px" },
+  "motion": {
+    "deck": { "type": "spring", "stiffness": 210, "damping": 22 },
+    "pill": { "type": "spring", "stiffness": 420, "damping": 34 },
+    "default": { "type": "spring", "stiffness": 300, "damping": 32 },
+    "flood": { "duration": 0.85, "ease": [0.65, 0, 0.35, 1] }
+  }
+}
