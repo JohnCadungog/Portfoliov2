@@ -33,6 +33,7 @@ npx tsc --noEmit # typecheck
 | `content/` (not in repo) | Original intake JSON lived outside the repo; `lib/content.ts` is the source of truth now. |
 
 ## Adding work (the main open task)
+0. Raw files may sit in `inbox/` (gitignored). Sort and optimize them from there; never commit the originals.
 1. Put images in `public/work/<project-slug>/` (prefer `.webp`/`.jpg`, ~2000px long edge, under ~500 KB each; convert large PNG/JPG to WebP).
 2. In `lib/content.ts`, list them in that project's `images: [asset("/work/<slug>/file.webp"), ...]`. First image = cover.
 3. A project with `images: []` shows a "Screenshot coming" swatch automatically.
