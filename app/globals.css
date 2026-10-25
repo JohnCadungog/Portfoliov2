@@ -545,10 +545,10 @@ a {
 }
 /* Figure plate: a drawing of the craft in one ink. Deep ink ground, pale tint lines. */
 .deck-plate {
-  --art-bg: color-mix(in oklab, var(--card-ink) 70%, #000);
-  --art-fg: color-mix(in oklab, var(--card-ink) 38%, #fff);
-  --art-dim: color-mix(in oklab, var(--art-fg) 32%, transparent);
-  --art-hot: color-mix(in oklab, var(--card-ink) 10%, #fff);
+  --art-bg: #f3f3f0;
+  --art-fg: #232428;
+  --art-dim: color-mix(in oklab, var(--art-fg) 22%, transparent);
+  --art-hot: var(--art-fg);
   position: relative;
   flex: 1;
   min-height: 0;
@@ -556,7 +556,20 @@ a {
   border-radius: 4px;
   overflow: hidden;
   background: var(--art-bg);
-  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--card-ink) 55%, #000);
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.12);
+}
+/* Same neutral plate on every card; it follows the theme, not the card's ink. */
+:root[data-theme="dark"] .deck-plate {
+  --art-bg: #1c1d21;
+  --art-fg: #e6e6e2;
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.1);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .deck-plate {
+    --art-bg: #1c1d21;
+    --art-fg: #e6e6e2;
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.1);
+  }
 }
 .deck-art {
   position: absolute;
@@ -697,7 +710,7 @@ a {
     fill: var(--art-bg);
   }
   30% {
-    fill: color-mix(in oklab, var(--card-ink) 85%, var(--art-bg));
+    fill: color-mix(in oklab, var(--art-fg) 18%, var(--art-bg));
   }
 }
 @keyframes art-pop {
