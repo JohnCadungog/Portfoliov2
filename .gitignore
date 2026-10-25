@@ -7,3 +7,5 @@ next-env.d.ts
 
 # Raw design files dropped in for sorting; only optimized copies go to public/work/
 inbox/
+.vercel
+.env*
