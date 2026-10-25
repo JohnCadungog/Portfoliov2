@@ -67,6 +67,7 @@ const gh = (repo: string): ProjectLink => ({
 });
 
 const atpImages = [
+  asset("/work/atp/00-logo.webp"),
   asset("/work/atp/06-teal-billboard-aframe.webp"),
   asset("/work/atp/09-logo-blue-on-white.png"),
   asset("/work/atp/10-logo-white-on-blue.png"),
@@ -316,8 +317,8 @@ export const careers: Record<CareerId, Career> = {
         stack: [],
         links: [],
         images: work("black-global", [
-          "01-brand-board",
           "03-logo-on-navy",
+          "01-brand-board",
           "04-logo-on-cream",
           "05-monogram-gold",
           "06-wordmark-stacked",
@@ -371,7 +372,7 @@ export const careers: Record<CareerId, Career> = {
         summary: "A seven-slide carousel for Winpact that tells a client's growth story, from the problem to the results.",
         stack: [],
         links: [],
-        images: work("winpact", ["01-page", "02-page", "03-page", "04-page", "05-page", "06-page", "07-page"]),
+        images: work("winpact", ["00-logo", "01-page", "02-page", "03-page", "04-page", "05-page", "06-page", "07-page"]),
       },
       {
         slug: "social-creatives",
@@ -398,7 +399,7 @@ export const careers: Record<CareerId, Career> = {
         summary: "A brand kit for Haks: logo variations, typography, color palette and stationery mockups, with a business card set.",
         stack: [],
         links: [],
-        images: work("haks", ["01-brand-kit", "02-business-cards"]),
+        images: work("haks", ["00-logo", "01-brand-kit", "02-business-cards"]),
       },
       websites,
       {
