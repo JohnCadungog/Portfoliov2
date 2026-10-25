@@ -32,6 +32,7 @@ function Sheet({ career, project, onClose }: { career: CareerId; project: Projec
   const closeBtn = useRef<HTMLButtonElement>(null);
   const [shot, setShot] = useState(0);
   const count = project.images.length;
+  const shotColor = useAverageColor(project.images[shot]);
 
   useEffect(() => {
     window.__lenis?.stop();
@@ -112,7 +113,11 @@ function Sheet({ career, project, onClose }: { career: CareerId; project: Projec
             </button>
           </div>
 
-          <motion.div layoutId={`media-${career}-${project.slug}`} className="sheet-media">
+          <motion.div
+            layoutId={`media-${career}-${project.slug}`}
+            className="sheet-media"
+            style={shotColor ? { backgroundColor: shotColor } : undefined}
+          >
             <AnimatePresence mode="popLayout" initial={false}>
               <motion.div
                 key={shot}
@@ -219,4 +224,46 @@ function Sheet({ career, project, onClose }: { career: CareerId; project: Projec
       </motion.div>
     </div>
   );
+}
+
+const averageColors = new Map<string, string>();
+
+/** Average color of an image, so the gallery's letterbox blends with the shot. */
+function useAverageColor(src: string | undefined) {
+  const [color, setColor] = useState(() => (src ? averageColors.get(src) : undefined));
+
+  useEffect(() => {
+    if (!src) return setColor(undefined);
+    const cached = averageColors.get(src);
+    if (cached) return setColor(cached);
+    let live = true;
+    const img = new Image();
+    img.onload = () => {
+      const size = 24;
+      const canvas = document.createElement("canvas");
+      canvas.width = canvas.height = size;
+      const ctx = canvas.getContext("2d", { willReadFrequently: true });
+      if (!ctx) return;
+      ctx.drawImage(img, 0, 0, size, size);
+      const data = ctx.getImageData(0, 0, size, size).data;
+      let r = 0, g = 0, b = 0, n = 0;
+      for (let i = 0; i < data.length; i += 4) {
+        const a = data[i + 3] / 255;
+        r += data[i] * a;
+        g += data[i + 1] * a;
+        b += data[i + 2] * a;
+        n += a;
+      }
+      if (!n) return;
+      const value = `rgb(${Math.round(r / n)} ${Math.round(g / n)} ${Math.round(b / n)})`;
+      averageColors.set(src, value);
+      if (live) setColor(value);
+    };
+    img.src = src;
+    return () => {
+      live = false;
+    };
+  }, [src]);
+
+  return color;
 }

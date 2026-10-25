@@ -855,6 +855,7 @@ a {
   border-radius: 10px;
   overflow: hidden;
   background: var(--paper-2);
+  transition: background-color 0.45s var(--ease-out);
 }
 .sheet-shot {
   position: absolute;
@@ -863,7 +864,6 @@ a {
 }
 .sheet-shot .media-img {
   object-fit: contain;
-  background: var(--paper-2);
 }
 .shot-nav {
   position: absolute;
