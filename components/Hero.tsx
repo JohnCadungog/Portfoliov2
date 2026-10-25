@@ -19,6 +19,40 @@ const word: Variants = {
   exit: { opacity: 0, y: "-0.2em", filter: "blur(6px)", transition: { duration: 0.18 } },
 };
 
+const STEPS = [100, 80, 60, 40, 20, 10];
+
+/** A printer's tint bar for the active ink, re-dealt chip by chip on every switch. */
+function InkRamp({ career, inkName }: { career: CareerId; inkName: string }) {
+  return (
+    <div className="ramp" aria-hidden>
+      <div className="ramp-chips">
+        {STEPS.map((step, i) => (
+          <motion.span
+            key={`${career}-${step}`}
+            className="ramp-chip"
+            initial={{ y: 18, opacity: 0, rotate: -4 }}
+            animate={{ y: 0, opacity: 1, rotate: 0 }}
+            transition={{ type: "spring", stiffness: 380, damping: 26, delay: 0.08 + i * 0.045 }}
+          >
+            <span
+              className="ramp-field"
+              style={{ background: `color-mix(in oklab, var(--ink) ${step}%, var(--on-ink))` }}
+            />
+            <span className="ramp-label code">{step}</span>
+          </motion.span>
+        ))}
+      </div>
+      <span className="ramp-meta code">
+        <svg width="22" height="22" viewBox="0 0 22 22" className="reg-mark">
+          <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" strokeWidth="1.25" />
+          <path d="M11 0v22M0 11h22" stroke="currentColor" strokeWidth="1.25" />
+        </svg>
+        {inkName}
+      </span>
+    </div>
+  );
+}
+
 export default function Hero({
   career,
   switchTo,
@@ -46,7 +80,11 @@ export default function Hero({
       </header>
 
       <div className="hero-body wrap">
+        <span className="crop crop-tl" aria-hidden />
+        <span className="crop crop-tr" aria-hidden />
+        <span className="crop crop-bl" aria-hidden />
         <div className="hero-copy">
+          <InkRamp career={career} inkName={c.inkName} />
           <p className="hero-role">
             <AnimatePresence mode="wait" initial={false}>
               <motion.span

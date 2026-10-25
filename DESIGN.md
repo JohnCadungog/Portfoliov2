@@ -49,3 +49,8 @@ Follows the device setting, with a sun/moon toggle in the hero bar (choice saved
 | `--line` | `rgb(21 22 26 / .12)` | `rgb(255 255 255 / .12)` |
 
 The theme change is a View Transition that grows as a circle from the toggle; reduced motion swaps instantly.
+
+## Hero details
+- **Tint bar**: six chips stepping the active ink from 100% to 10% toward `--on-ink`, with mono step labels and the ink code beside a slowly turning registration mark. Chips re-deal with a 45ms spring stagger on every career switch.
+- **Crop marks**: 1px L-marks at the hero's top corners and bottom-left, `--on-ink` at 45%.
+- **Dark stock** is mixed from the active ink: `color-mix(in oklab, var(--ink) 13%, #15161D)` for paper (navy, plum, olive), with strips, lines and secondary text tinted the same way.

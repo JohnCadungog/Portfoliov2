@@ -27,14 +27,18 @@
   color-scheme: light;
 }
 
-/* Dark stock: the inks stay full strength, the paper turns to press-room black. */
-:root[data-theme="dark"] {
-  --paper: #0e0f12;
-  --paper-2: #1a1b20;
-  --strip: #17181c;
-  --text: #ecedef;
-  --text-2: #a4a7af;
-  --line: rgb(255 255 255 / 0.12);
+/*
+ * Dark stock: the inks stay full strength; the paper becomes a deep shade of the active ink.
+ * Tokens are also set on [data-career], where --ink changes per career, so they follow it.
+ */
+:root[data-theme="dark"],
+:root[data-theme="dark"] [data-career] {
+  --paper: color-mix(in oklab, var(--ink) 13%, #15161d);
+  --paper-2: color-mix(in oklab, var(--ink) 18%, #1d1e27);
+  --strip: color-mix(in oklab, var(--ink) 15%, #1b1c24);
+  --text: #eeeff3;
+  --text-2: color-mix(in oklab, var(--ink) 14%, #a9abb5);
+  --line: color-mix(in oklab, var(--ink) 30%, rgb(255 255 255 / 0.12));
   --shadow-chip: 0 1px 2px rgb(0 0 0 / 0.5), 0 12px 32px -12px rgb(0 0 0 / 0.7);
   --shadow-chip-hover: 0 2px 4px rgb(0 0 0 / 0.5), 0 22px 44px -14px rgb(0 0 0 / 0.85);
   --shadow-card: 0 2px 4px rgb(0 0 0 / 0.3), 0 24px 48px -16px rgb(0 0 0 / 0.6);
@@ -43,13 +47,14 @@
   color-scheme: dark;
 }
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --paper: #0e0f12;
-    --paper-2: #1a1b20;
-    --strip: #17181c;
-    --text: #ecedef;
-    --text-2: #a4a7af;
-    --line: rgb(255 255 255 / 0.12);
+  :root:not([data-theme="light"]),
+  :root:not([data-theme="light"]) [data-career] {
+    --paper: color-mix(in oklab, var(--ink) 13%, #15161d);
+    --paper-2: color-mix(in oklab, var(--ink) 18%, #1d1e27);
+    --strip: color-mix(in oklab, var(--ink) 15%, #1b1c24);
+    --text: #eeeff3;
+    --text-2: color-mix(in oklab, var(--ink) 14%, #a9abb5);
+    --line: color-mix(in oklab, var(--ink) 30%, rgb(255 255 255 / 0.12));
     --shadow-chip: 0 1px 2px rgb(0 0 0 / 0.5), 0 12px 32px -12px rgb(0 0 0 / 0.7);
     --shadow-chip-hover: 0 2px 4px rgb(0 0 0 / 0.5), 0 22px 44px -14px rgb(0 0 0 / 0.85);
     --shadow-card: 0 2px 4px rgb(0 0 0 / 0.3), 0 24px 48px -16px rgb(0 0 0 / 0.6);
@@ -57,6 +62,11 @@
     --wash-strong: rgb(255 255 255 / 0.16);
     color-scheme: dark;
   }
+}
+
+[data-career] {
+  background: var(--paper);
+  transition: background-color 0.6s var(--ease-out);
 }
 
 /* Theme change grows from the toggle (see ThemeToggle). */
@@ -307,7 +317,90 @@ a {
   font-size: clamp(3rem, 7vw, 6rem);
   font-stretch: 88%;
   margin: 0;
-  min-height: 2.9em;
+}
+
+/* Tint bar + printer's marks */
+.ramp {
+  display: flex;
+  align-items: flex-end;
+  gap: 1.25rem;
+  margin-bottom: clamp(2rem, 5vh, 3.5rem);
+}
+.ramp-chips {
+  display: flex;
+  gap: 6px;
+}
+.ramp-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.4rem;
+}
+.ramp-field {
+  display: block;
+  width: clamp(38px, 3.8vw, 58px);
+  aspect-ratio: 3 / 4;
+  border-radius: 4px;
+  box-shadow:
+    inset 0 0 0 1px color-mix(in oklab, var(--on-ink) 38%, transparent),
+    0 10px 24px -14px rgb(0 0 0 / 0.45);
+  transition: background-color 0.5s var(--ease-out);
+}
+.ramp-label {
+  color: var(--on-ink-2);
+  font-size: 0.7rem;
+}
+.ramp-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-bottom: 1.45rem;
+  color: var(--on-ink-2);
+}
+.reg-mark {
+  animation: reg-spin 24s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reg-mark {
+    animation: none;
+  }
+}
+@media (max-width: 520px) {
+  .ramp-meta {
+    display: none;
+  }
+}
+@keyframes reg-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.crop {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-color: color-mix(in oklab, var(--on-ink) 45%, transparent);
+  border-style: solid;
+  border-width: 0;
+  pointer-events: none;
+}
+.crop-tl {
+  top: 0;
+  left: calc(var(--gutter) - 14px);
+  border-top-width: 1px;
+  border-left-width: 1px;
+}
+.crop-tr {
+  top: 0;
+  right: calc(var(--gutter) - 14px);
+  border-top-width: 1px;
+  border-right-width: 1px;
+}
+.crop-bl {
+  bottom: 1.25rem;
+  left: calc(var(--gutter) - 14px);
+  border-bottom-width: 1px;
+  border-left-width: 1px;
 }
 .hero-word {
   display: inline-block;
@@ -318,7 +411,6 @@ a {
   max-width: 34rem;
   font-size: clamp(1.05rem, 1.3vw, 1.2rem);
   color: var(--on-ink-2);
-  min-height: 4.65em;
 }
 .hero-actions {
   display: flex;
@@ -380,7 +472,7 @@ a {
   background: #fff;
 }
 .switch-dark .switch-option[data-active] {
-  color: var(--text);
+  color: #15161a;
 }
 .switch-dot,
 .switch-label {
