@@ -36,3 +36,16 @@ Strategy: drenched. Hero and contact are the full ink; work and experience sit o
 
 ## Spacing
 Gutter `clamp(1rem, 4vw, 3.5rem)`, max width 1440px, section padding `clamp(4.5rem, 10vw, 8rem)`.
+
+## Dark mode
+Follows the device setting, with a sun/moon toggle in the hero bar (choice saved in `localStorage`, applied before first paint). Inks stay at full strength; only the stock changes.
+
+| Token | Light | Dark |
+|---|---|---|
+| `--paper` | `#F2F3F0` | `#0E0F12` |
+| `--paper-2` | `#E7E8E4` | `#1A1B20` |
+| `--strip` | `#FBFBF9` | `#17181C` |
+| `--text` / `--text-2` | `#15161A` / `#4C4F57` | `#ECEDEF` / `#A4A7AF` |
+| `--line` | `rgb(21 22 26 / .12)` | `rgb(255 255 255 / .12)` |
+
+The theme change is a View Transition that grows as a circle from the toggle; reduced motion swaps instantly.

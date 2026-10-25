@@ -5,6 +5,7 @@ import { ArrowDown, FileText } from "lucide-react";
 import { careers, person, type CareerId } from "@/lib/content";
 import CareerSwitch from "./CareerSwitch";
 import FanDeck from "./FanDeck";
+import ThemeToggle from "./ThemeToggle";
 import type { SwitchCareer } from "./Portfolio";
 
 const word: Variants = {
@@ -41,6 +42,7 @@ export default function Hero({
           <a href="#contact">Contact</a>
         </nav>
         <CareerSwitch career={career} switchTo={switchTo} id="hero" tone="ink" />
+        <ThemeToggle />
       </header>
 
       <div className="hero-body wrap">
