@@ -39,7 +39,9 @@ npx tsc --noEmit # typecheck
 3. A project with `images: []` shows a "Screenshot coming" swatch automatically.
 4. New design projects go in `careers.design.projects` with `kind` (e.g. "Brand identity", "Social", "Interface"), a factual `summary`, optional `details`, `stack`, `links`.
 
-Still waiting on real material for: **Peak Status OS, Lime, QR-FBS Simulation Kit, LeaveDesk** screenshots, and design projects **Social media creatives, UI/UX case study, Client websites** (currently placeholders). ATP Construction is complete (10 images in `public/work/atp/`).
+Still waiting on real material for: **Peak Status OS, QR-FBS Simulation Kit, LeaveDesk, TheNotesAI, Bird Bone Classifier, Expense Tracker** screenshots, and the design **UI/UX case study** (placeholder). Source files live in `D:\Portfolio Collection` on John's machine.
+
+Client context: Black Global, Winpact and Haks are separate clients, each shown in their own right. Their work came through a middleman, and he is not named on the site. The Social creatives post template was made for a client (Ian). The "Websites" project (real estate, MetroEvent, Escafe) appears under both Engineer and Designer.
 
 ## Rules
 - **Never invent facts**: no made-up projects, clients, metrics, employers, testimonials or links. Facts come from John's résumé, GitHub, or John directly. If something is missing, leave a placeholder and ask.

@@ -20,6 +20,10 @@ export default function Experience({ career }: { career: CareerId }) {
             </p>
             <p className="edu-honor">{person.education.honors}</p>
           </div>
+          <div className="edu">
+            <p className="code side-label">Certification</p>
+            <p>{person.certification}</p>
+          </div>
         </div>
 
         <AnimatePresence mode="wait" initial={false}>
