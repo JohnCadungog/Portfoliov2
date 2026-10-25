@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, type CSSProperties } from "react";
 import { animate, motion, useMotionValue } from "motion/react";
 import { careerOrder, careers, type CareerId } from "@/lib/content";
 import type { SwitchCareer } from "./Portfolio";
@@ -66,10 +66,17 @@ export default function FanDeck({ career, switchTo }: { career: CareerId; switch
               else document.getElementById("work")?.scrollIntoView({ behavior: "smooth" });
             }}
           >
-            <span className="deck-field" style={{ background: c.ink, color: c.onInk }}>
+            {/* The lead image is printed as a one-ink proof, so any screenshot sits in the card's palette
+                and never runs under the career word. The front card develops to full color on hover. */}
+            <span className="deck-field" style={{ "--card-ink": c.ink, background: c.ink, color: c.onInk } as CSSProperties}>
+              <span className="deck-no code">JC—0{i + 1}</span>
               {lead ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={lead.images[0]} alt="" className="deck-img" draggable={false} />
+                <span className="deck-plate">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={lead.images[0]} alt="" className="deck-img deck-img-ink" draggable={false} />
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={lead.images[0]} alt="" className="deck-img deck-img-color" draggable={false} />
+                </span>
               ) : (
                 <span className="deck-list" aria-hidden>
                   {c.projects.slice(0, 4).map((p) => (
@@ -77,7 +84,7 @@ export default function FanDeck({ career, switchTo }: { career: CareerId; switch
                   ))}
                 </span>
               )}
-              <span className="deck-no code">JC—0{i + 1}</span>
+              <span className="deck-caption code">{lead ? lead.name : `${c.projects.length} projects`}</span>
               <span className="deck-word display">{c.label}</span>
             </span>
             <span className="deck-strip">

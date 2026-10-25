@@ -24,6 +24,7 @@ Strategy: drenched. Hero and contact are the full ink; work and experience sit o
 ## Components
 - **Swatch chip**: color/image field over a `--strip` label (name, kind, "No. 0X"). Radius 6px, soft two-layer shadow. Missing images show a hatched ink placeholder with initials and "Screenshot coming".
 - **Deck card**: tall 1:1.55 swatch with ink field, career word, label strip and a rivet at the pivot (transform-origin 50% 93%). Fan angles 0°, -12°, -24°.
+- **Proof plate** (deck card image): the lead project image is never shown raw under the career word. It is printed as a one-ink proof in a window on the ink field: grayscale multiplied onto a pale tint (`ink 42%` + white), with shadows lifted to deep ink (`ink 78%` + black, `lighten`). A mono caption names the project; the career word sits below on solid ink. Hovering or focusing the front card develops the proof to full color over 0.6s. Any new image therefore lands in the card's palette automatically. Careers with no image show their project list instead.
 - **Segmented switch**: pill rides between options on a spring (`layoutId`). Ink tone in hero, dark floating dock after scroll.
 - **Sheet**: bottom sheet on mobile, centered panel on desktop; drag down to dismiss; cover morphs from the chip.
 - **Buttons**: 48px pill; solid (on-ink fill) and ghost (outline).

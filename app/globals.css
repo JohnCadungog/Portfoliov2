@@ -534,8 +534,26 @@ a {
 .deck-field {
   position: relative;
   flex: 1;
+  min-height: 0;
   overflow: hidden;
-  display: block;
+  display: flex;
+  flex-direction: column;
+  padding: 0.85rem 0.95rem 0.75rem;
+}
+.deck-no {
+  opacity: 0.85;
+}
+/* One-ink proof: the image is printed in the card's ink on a pale tint of it, like a plate pulled
+   from a single-color press. Highlights take the tint, shadows go to deep ink. */
+.deck-plate {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  margin-top: 0.7rem;
+  border-radius: 4px;
+  overflow: hidden;
+  background: color-mix(in oklab, var(--card-ink) 42%, #fff);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--card-ink) 60%, #000 40%);
 }
 .deck-img {
   position: absolute;
@@ -543,31 +561,52 @@ a {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: 50% 30%;
   pointer-events: none;
 }
-.deck-img + .deck-no,
-.deck-img ~ .deck-word {
-  text-shadow: 0 1px 12px rgb(0 0 0 / 0.35);
-  color: #fff;
+.deck-img-ink {
+  filter: grayscale(1) contrast(1.2) brightness(1.06);
+  mix-blend-mode: multiply;
 }
-.deck-no {
+.deck-plate::after {
+  content: "";
   position: absolute;
-  top: 0.85rem;
-  left: 0.95rem;
-  opacity: 0.85;
+  inset: 0;
+  background: color-mix(in oklab, var(--card-ink) 78%, #000);
+  mix-blend-mode: lighten;
+  opacity: 1;
+  pointer-events: none;
+  transition: opacity 0.6s var(--ease-out);
+}
+.deck-img-color {
+  opacity: 0;
+  transition: opacity 0.6s var(--ease-out);
+}
+.deck-card[aria-pressed="true"]:hover .deck-img-color,
+.deck-card[aria-pressed="true"]:focus-visible .deck-img-color {
+  opacity: 1;
+}
+.deck-card[aria-pressed="true"]:hover .deck-plate::after,
+.deck-card[aria-pressed="true"]:focus-visible .deck-plate::after {
+  opacity: 0;
+}
+.deck-caption {
+  margin-top: 0.45rem;
+  opacity: 0.8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .deck-word {
-  position: absolute;
-  left: 0.85rem;
-  bottom: 0.7rem;
+  margin-top: auto;
+  padding-top: 0.35rem;
   font-size: calc(var(--card-w) * 0.17);
   font-stretch: 80%;
+  line-height: 0.9;
 }
 .deck-list {
-  position: absolute;
-  top: 2.6rem;
-  left: 0.95rem;
-  right: 0.95rem;
+  flex: 1;
+  margin-top: 0.7rem;
   display: flex;
   flex-direction: column;
   gap: 0.15rem;
