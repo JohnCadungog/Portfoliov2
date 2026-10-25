@@ -543,52 +543,238 @@ a {
 .deck-no {
   opacity: 0.85;
 }
-/* One-ink proof: the image is printed in the card's ink on a pale tint of it, like a plate pulled
-   from a single-color press. Highlights take the tint, shadows go to deep ink. */
+/* Figure plate: a drawing of the craft in one ink. Deep ink ground, pale tint lines. */
 .deck-plate {
+  --art-bg: color-mix(in oklab, var(--card-ink) 70%, #000);
+  --art-fg: color-mix(in oklab, var(--card-ink) 38%, #fff);
+  --art-dim: color-mix(in oklab, var(--art-fg) 32%, transparent);
+  --art-hot: color-mix(in oklab, var(--card-ink) 10%, #fff);
   position: relative;
   flex: 1;
   min-height: 0;
   margin-top: 0.7rem;
   border-radius: 4px;
   overflow: hidden;
-  background: color-mix(in oklab, var(--card-ink) 42%, #fff);
-  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--card-ink) 60%, #000 40%);
+  background: var(--art-bg);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--card-ink) 55%, #000);
 }
-.deck-img {
+.deck-art {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: 50% 30%;
   pointer-events: none;
 }
-.deck-img-ink {
-  filter: grayscale(1) contrast(1.2) brightness(1.06);
-  mix-blend-mode: multiply;
+.deck-art * {
+  transform-box: view-box;
 }
-.deck-plate::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: color-mix(in oklab, var(--card-ink) 78%, #000);
-  mix-blend-mode: lighten;
-  opacity: 1;
-  pointer-events: none;
-  transition: opacity 0.6s var(--ease-out);
+.art-dim-fill {
+  fill: var(--art-dim);
 }
-.deck-img-color {
+.art-dim {
+  fill: none;
+  stroke: var(--art-dim);
+  stroke-width: 1;
+}
+.art-dash {
+  stroke-dasharray: 3 4;
+}
+.art-line {
+  fill: none;
+  stroke: var(--art-fg);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.art-thin {
+  stroke-width: 0.8;
+}
+.art-node {
+  fill: var(--art-bg);
+  stroke: var(--art-fg);
+  stroke-width: 1.4;
+  stroke-linejoin: round;
+}
+.art-letter {
+  fill: none;
+  stroke: var(--art-hot);
+  stroke-width: 12;
+  stroke-linecap: round;
+  opacity: 0.9;
+}
+.art-check {
+  fill: none;
+  stroke: var(--art-hot);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.art-anchor {
+  fill: var(--art-bg);
+  stroke: var(--art-hot);
+  stroke-width: 1.2;
+}
+.art-ctrl {
+  fill: var(--art-hot);
+}
+.art-dot {
+  fill: var(--art-hot);
   opacity: 0;
-  transition: opacity 0.6s var(--ease-out);
 }
-.deck-card[aria-pressed="true"]:hover .deck-img-color,
-.deck-card[aria-pressed="true"]:focus-visible .deck-img-color {
-  opacity: 1;
+.art-cursor {
+  fill: var(--art-fg);
 }
-.deck-card[aria-pressed="true"]:hover .deck-plate::after,
-.deck-card[aria-pressed="true"]:focus-visible .deck-plate::after {
+.art-label,
+.art-code,
+.art-tag {
+  font-family: var(--font-code);
+  fill: var(--art-fg);
+}
+.art-label {
+  font-size: 9px;
+  text-anchor: middle;
+}
+.art-code {
+  font-size: 10px;
+}
+.art-strong {
+  fill: var(--art-hot);
+  font-weight: 600;
+}
+.art-tag {
+  font-size: 7px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  fill: var(--art-dim);
+}
+
+/* Motion runs only on the front card, once each time it comes forward. Every element's resting
+   state is the finished drawing, so back cards and reduced motion show the complete plate. */
+.deck-card[aria-pressed="true"] .art-draw {
+  stroke-dasharray: 1;
+  animation: art-draw 0.8s var(--ease-out) var(--d, 0s) both;
+}
+.deck-card[aria-pressed="true"] .art-letter.art-draw {
+  animation-duration: 1.1s;
+}
+.deck-card[aria-pressed="true"] .art-flash {
+  animation:
+    art-draw 0.8s var(--ease-out) var(--d, 0s) both,
+    art-flash 0.7s var(--ease-out) var(--flash, 0s) both;
+}
+.deck-card[aria-pressed="true"] .art-handle {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: art-pop 0.45s var(--ease-out) var(--d, 0s) both;
+}
+.deck-card[aria-pressed="true"] .art-dot-request {
+  animation: art-request 0.9s cubic-bezier(0.77, 0, 0.175, 1) 0.6s both;
+}
+.art-type-cover {
+  fill: var(--art-bg);
   opacity: 0;
+}
+.deck-card[aria-pressed="true"] .art-type-cover {
+  animation: art-type 0.45s steps(6, end) 1.45s both;
+}
+.deck-card[aria-pressed="true"] .art-cursor {
+  animation: art-blink 1.1s steps(1, end) 1.9s infinite;
+}
+.deck-card[aria-pressed="true"] .art-dot-flow {
+  animation: art-flow 1.9s linear 0.6s both;
+}
+@keyframes art-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes art-flash {
+  0%,
+  100% {
+    fill: var(--art-bg);
+  }
+  30% {
+    fill: color-mix(in oklab, var(--card-ink) 85%, var(--art-bg));
+  }
+}
+@keyframes art-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes art-request {
+  0% {
+    opacity: 0;
+    transform: translate(80px, 46px);
+  }
+  12%,
+  88% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(180px, 46px);
+  }
+}
+@keyframes art-type {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  99.9% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+}
+@keyframes art-blink {
+  50% {
+    opacity: 0;
+  }
+}
+@keyframes art-flow {
+  0% {
+    opacity: 0;
+    transform: translate(64px, 46px);
+  }
+  5% {
+    opacity: 1;
+  }
+  30% {
+    transform: translate(178px, 46px);
+  }
+  38% {
+    transform: translate(196px, 64px);
+  }
+  55% {
+    transform: translate(196px, 110px);
+  }
+  62% {
+    transform: translate(174px, 124px);
+  }
+  92% {
+    opacity: 1;
+    transform: translate(80px, 124px);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(80px, 124px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .deck-card .deck-art * {
+    animation: none !important;
+  }
 }
 .deck-caption {
   margin-top: 0.45rem;
@@ -603,21 +789,6 @@ a {
   font-size: calc(var(--card-w) * 0.17);
   font-stretch: 80%;
   line-height: 0.9;
-}
-.deck-list {
-  flex: 1;
-  margin-top: 0.7rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
-  font-size: 0.82rem;
-  font-weight: 500;
-  opacity: 0.8;
-}
-.deck-list span {
-  border-top: 1px solid currentColor;
-  border-top-color: color-mix(in oklab, currentColor 30%, transparent);
-  padding-top: 0.3rem;
 }
 .deck-strip {
   height: 25%;
